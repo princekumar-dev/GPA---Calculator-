@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GPA Calculator</h1>
+            <p class="subtitle">Calculate your Grade Point Average easily and accurately</p>
+        </header>
+
+        <main>
+            <div class="total-credits">
+                <h2>Total Credits</h2>
+                <div class="result-card">
+                    <span id="total-credits-value">0.0</span>
+                </div>
+            </div>
+
+            <section class="course-list">
+                <div class="section-header">
+                    <h2>Courses</h2>
+                    <button class="btn-primary" onclick="addCourse()">Add Course</button>
+                </div>
+                
+                <div id="courses-container">
+                    <!-- Course entries will be added here -->
+                </div>
+            </section>
+
+            <div class="actions">
+                <button class="btn-primary calculate-btn" onclick="calculateGPA()">Calculate GPA</button>
+            </div>
+
+            <div class="current-gpa">
+                <h2>Current GPA</h2>
+                <div class="result-card">
+                    <span id="gpa-value">0.00</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Grade Reference Modal -->
+        <div id="gradeModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Grade Reference</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Grade</th>
+                                <th>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for grade, points in grade_points.items() %}
+                            <tr>
+                                <td>{{ grade }}</td>
+                                <td>{{ points }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <button class="btn-secondary" onclick="document.getElementById('gradeModal').style.display='block'">
+            View Grade Reference
+        </button>
+        <p>&copy; 2024 GPA Calculator. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Initialize grade points from Flask
+        const GRADE_POINTS = {{ grade_points|tojson }};
+        const DEFAULT_COURSES = {{ default_courses|tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 

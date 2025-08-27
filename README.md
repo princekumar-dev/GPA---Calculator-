@@ -70,7 +70,7 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 This project is licensed under the MIT License.
 
 ## Author
-- [Your Name]
+- Prince 
 
 ---
 Feel free to customize this README with additional details or contact information as needed.

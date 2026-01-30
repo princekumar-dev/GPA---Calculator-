@@ -115,33 +115,40 @@
 
   function updateTotals(){
     const rows = Array.from(tbody.querySelectorAll('tr'));
-    let totalCredits=0, totalPoints=0;
-    rows.forEach(r=>{
+    let totalCredits = 0, totalPoints = 0;
+    rows.forEach(r => {
       const creditsEl = r.querySelector('.credits');
-      const grade = r.querySelector('.grade').value;
-      const credits = parseFloat(creditsEl.value) || 0;
-      const gp = gradeMap[grade] || 0;
+      const gradeEl = r.querySelector('.grade');
+
+      // accept both dot and comma decimals, trim whitespace
+      let raw = String(creditsEl.value || '').replace(',', '.').trim();
+      let credits = parseFloat(raw);
+      if (!Number.isFinite(credits)) credits = 0;
+
+      const grade = String(gradeEl.value || '');
+      const gp = Object.prototype.hasOwnProperty.call(gradeMap, grade) ? gradeMap[grade] : 0;
       const points = gp * credits;
 
       // validation: credits must be positive
+      const pointsCell = r.querySelector('.points-cell');
       if (credits <= 0){
         r.classList.add('row-invalid');
         creditsEl.setAttribute('aria-invalid','true');
+        pointsCell.textContent = '—';
+        return; // skip adding invalid/zero rows to totals
       } else {
         r.classList.remove('row-invalid');
         creditsEl.removeAttribute('aria-invalid');
       }
 
-      const pointsCell = r.querySelector('.points-cell');
-      pointsCell.textContent = credits>0 ? points.toFixed(2) : '—';
-
+      pointsCell.textContent = points.toFixed(2);
       totalCredits += credits;
       totalPoints += points;
     });
 
-    totalCreditsEl.textContent = totalCredits.toFixed(2);
-    const gpa = totalCredits ? (totalPoints/totalCredits) : 0;
-    resultEl.querySelector('.result-value').textContent = `GPA: ${gpa.toFixed(2)}`;
+    totalCreditsEl.textContent = totalCredits ? totalCredits.toFixed(2) : '0';
+    const gpa = totalCredits ? (totalPoints / totalCredits) : 0;
+    resultEl.querySelector('.result-value').textContent = totalCredits ? `GPA: ${gpa.toFixed(2)}` : 'GPA: —';
   }
 
   function collectCourses(){

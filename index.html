@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GPA Calculator — Academics Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Use Poppins for headings and Inter for body for a refined typographic pairing -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <section class="card glass-card">
+      <header class="card-header">
+        <h1 class="title wave-text">GPA Calculator</h1>
+        <p class="subtitle">Use the familiar Academics card style to compute semester GPA.</p>
+      </header>
+
+      <div class="card-body">
+        <form id="gpa-form">
+          <table id="courses-table">
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Credits</th>
+                <th>Grade</th>
+                  <th>Points</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="controls">
+            <button type="button" id="add-course" class="btn">Add Course</button>
+            <button type="button" id="calc" class="btn primary">Calculate GPA</button>
+            <button type="button" id="save" class="btn">Save</button>
+            <button type="button" id="load" class="btn">Load</button>
+            <button type="button" id="reset" class="btn">Reset</button>
+          </div>
+        </form>
+
+        <div class="result" id="result" aria-live="polite">
+          <div class="result-value">GPA: —</div>
+          <div class="result-details">Total Credits: <span id="total-credits">0</span></div>
+        </div>
+        <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+      </div>
+
+      <footer class="card-footer">
+        <small>Designed using Academics site typography and card styles.</small>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Modal for confirmations (styled like Academics) -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">Confirm action</h3>
+      <p id="modal-message">Are you sure?</p>
+      <div id="modal-actions" class="modal-actions">
+        <button id="modal-cancel" class="btn">Cancel</button>
+        <button id="modal-confirm" class="btn primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

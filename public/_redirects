@@ -1,0 +1,7 @@
+# Redirects for SPA (Single Page Application) routing
+# All routes should serve index.html for client-side routing
+
+# API routes are handled by vercel.json
+# This file is a fallback for platforms that support _redirects
+
+/*    /index.html   200

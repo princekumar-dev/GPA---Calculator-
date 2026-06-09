@@ -1,0 +1,17 @@
+{
+  "name": "MSEC Academics",
+  "short_name": "MSEC",
+  "description": "Venue Booking and Event Management Platform for MSEC",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#3d99f5",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "/images/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/images/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/images/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/images/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

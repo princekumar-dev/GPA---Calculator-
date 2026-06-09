@@ -1009,7 +1009,7 @@
       swipeState.row = row;
       swipeState.startX = e.touches[0].clientX;
       swipeState.startY = e.touches[0].clientY;
-      swipeState.startTransform = swipeState.openRow === row ? -160 : 0;
+      swipeState.startTransform = swipeState.openRow === row ? -240 : 0;
       swipeState.currentX = swipeState.startTransform;
       swipeState.isSwiping = true;
       swipeState.directionChecked = false;
@@ -1100,9 +1100,9 @@
 
       let newX = swipeState.startTransform + deltaX;
       
-      // Restrict swipe between -200px (left) and 0px (right)
+      // Restrict swipe between -280px (left) and 0px (right)
       if (newX > 0) newX = 0;
-      if (newX < -200) newX = -200;
+      if (newX < -280) newX = -280;
       
       swipeState.currentX = newX;
       swipeState.row.style.transform = `translateX(${swipeState.currentX}px)`;
@@ -1118,7 +1118,7 @@
         swipeState.isSwiping = false;
         if (swipeState.currentX <= -50) {
           // Snap open
-          row.style.transform = `translateX(-160px)`;
+          row.style.transform = `translateX(-240px)`;
           row.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
           swipeState.openRow = row;
         } else {

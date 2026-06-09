@@ -223,7 +223,7 @@ select {
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 .modal-gap {
-  margin-top: 26px;
+  margin-top: 40px;
 }
 @media (min-width: 640px) {
   .modal-gap {

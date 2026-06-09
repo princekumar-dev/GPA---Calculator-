@@ -110,6 +110,7 @@
 
 
     if (state.courses && state.courses.length > 0) {
+      restoreMissingPresets();
       renderCourses();
     } else {
       loadPresetCourses(state.dept, state.sem, false);
@@ -164,6 +165,7 @@
       
       if (state.savedSemesters[semKey]) {
         state.courses = state.savedSemesters[semKey].courses;
+        restoreMissingPresets();
         renderCourses();
         updateGpaCalculation();
         showToast(`Loaded saved marks for Semester ${state.sem}.`);
@@ -303,6 +305,29 @@
   }
 
   // --- Preset Loader ---
+  function restoreMissingPresets() {
+    const branchData = window.COURSES_DB[state.dept];
+    if (branchData && branchData.semesters && branchData.semesters[state.sem]) {
+      const presets = branchData.semesters[state.sem];
+      const newCourses = [];
+      presets.forEach(presetCourse => {
+        const existing = state.courses.find(c => c.name === presetCourse.name);
+        if (existing) {
+          newCourses.push(existing);
+        } else {
+          newCourses.push({ name: presetCourse.name, credits: presetCourse.credits, grade: '', isPreset: true });
+        }
+      });
+      state.courses.forEach(c => {
+        const isPresetCourse = presets.some(p => p.name === c.name);
+        if (!isPresetCourse) {
+          newCourses.push(c);
+        }
+      });
+      state.courses = newCourses;
+    }
+  }
+
   function loadPresetCourses(dept, sem, showToastAlert = true) {
     coursesTbody.innerHTML = '';
     const branchData = window.COURSES_DB[dept];
@@ -950,17 +975,26 @@
   }
 
   // --- Mobile Swipe to Delete ---
-  let swipeState = { row: null, startX: 0, currentX: 0, isSwiping: false };
+  let swipeState = { row: null, startX: 0, startTransform: 0, currentX: 0, isSwiping: false, openRow: null };
 
   function initSwipeToDelete(tbody) {
     tbody.addEventListener('touchstart', e => {
       if (window.innerWidth > 640) return;
       const row = e.target.closest('tr');
       if (!row) return;
-      
+
+      // Close previously open row if different
+      if (swipeState.openRow && swipeState.openRow !== row) {
+        swipeState.openRow.style.transform = 'translateX(0)';
+        swipeState.openRow = null;
+        const bg = document.getElementById('global-swipe-bg');
+        if (bg) bg.style.display = 'none';
+      }
+
       swipeState.row = row;
       swipeState.startX = e.touches[0].clientX;
-      swipeState.currentX = 0;
+      swipeState.startTransform = swipeState.openRow === row ? -80 : 0;
+      swipeState.currentX = swipeState.startTransform;
       swipeState.isSwiping = true;
       row.style.transition = 'none';
       row.style.position = 'relative';
@@ -970,9 +1004,8 @@
       if (!bg) {
         bg = document.createElement('div');
         bg.id = 'global-swipe-bg';
-        bg.innerHTML = '<span style="color:white; font-weight:bold; font-size:1.1rem; margin-right: 32px; letter-spacing: 0.5px;">Delete</span>';
+        bg.innerHTML = '<div style="width:80px; height:100%; display:flex; align-items:center; justify-content:center; background-color:#ef4444; color:white; font-weight:bold; font-size:0.95rem; border-top-right-radius:16px; border-bottom-right-radius:16px; box-shadow:inset 0 0 10px rgba(0,0,0,0.1);">Delete</div>';
         bg.style.position = 'absolute';
-        bg.style.backgroundColor = '#ef4444';
         bg.style.borderRadius = '16px';
         bg.style.display = 'none';
         bg.style.alignItems = 'center';
@@ -980,44 +1013,60 @@
         bg.style.zIndex = '1';
         document.body.appendChild(bg);
       }
+      
       const rect = row.getBoundingClientRect();
       bg.style.top = (rect.top + window.scrollY) + 'px';
       bg.style.left = (rect.left + window.scrollX) + 'px';
       bg.style.width = rect.width + 'px';
       bg.style.height = rect.height + 'px';
       bg.style.display = 'flex';
+      
+      // When delete is clicked
+      bg.onclick = (e) => {
+        e.preventDefault();
+        const activeRow = swipeState.openRow || swipeState.row;
+        if (activeRow) {
+          const deleteBtn = activeRow.querySelector('.btn-row-remove');
+          if (deleteBtn) deleteBtn.click();
+          activeRow.style.transform = 'translateX(0)';
+        }
+        bg.style.display = 'none';
+        swipeState.openRow = null;
+      };
     }, {passive: true});
 
     tbody.addEventListener('touchmove', e => {
       if (!swipeState.isSwiping || !swipeState.row) return;
       const deltaX = e.touches[0].clientX - swipeState.startX;
-      if (deltaX < 0) { // Only swipe left
-        swipeState.currentX = Math.max(deltaX, -140);
-        swipeState.row.style.transform = `translateX(${swipeState.currentX}px)`;
-      }
+      let newX = swipeState.startTransform + deltaX;
+      
+      // Restrict swipe between -100px (left) and 0px (right)
+      if (newX > 0) newX = 0;
+      if (newX < -100) newX = -100;
+      
+      swipeState.currentX = newX;
+      swipeState.row.style.transform = `translateX(${swipeState.currentX}px)`;
     }, {passive: true});
 
     tbody.addEventListener('touchend', e => {
       if (!swipeState.isSwiping || !swipeState.row) return;
       swipeState.isSwiping = false;
       const row = swipeState.row;
-      row.style.transition = 'transform 0.3s ease';
+      row.style.transition = 'transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)';
       
-      if (swipeState.currentX <= -75) {
-        row.style.transform = `translateX(-100vw)`;
-        setTimeout(() => {
-          const deleteBtn = row.querySelector('.btn-row-remove');
-          if (deleteBtn) deleteBtn.click();
-          const bg = document.getElementById('global-swipe-bg');
-          if (bg) bg.style.display = 'none';
-          row.style.transform = '';
-        }, 300);
+      if (swipeState.currentX <= -40) {
+        // Snap open
+        row.style.transform = `translateX(-80px)`;
+        swipeState.openRow = row;
       } else {
+        // Snap closed
         row.style.transform = `translateX(0)`;
+        swipeState.openRow = null;
         setTimeout(() => {
-          const bg = document.getElementById('global-swipe-bg');
-          if (bg) bg.style.display = 'none';
-          row.style.transform = '';
+          if (!swipeState.openRow) {
+            const bg = document.getElementById('global-swipe-bg');
+            if (bg) bg.style.display = 'none';
+          }
         }, 300);
       }
       swipeState.row = null;

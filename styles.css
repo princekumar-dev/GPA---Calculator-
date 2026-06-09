@@ -43,11 +43,7 @@ body {
   min-height: 100vh;
   font-family: var(--font-body);
   color: var(--text-primary);
-  background-image: url('./assets/images/campus.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   -webkit-font-smoothing: antialiased;
   padding: 0;
   position: relative;
@@ -211,11 +207,20 @@ select {
 
 /* Intro Overlay */
 .intro-overlay {
-  position: relative;
-  z-index: 50;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 100px);
+  background-image: url('./assets/images/campus.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 .intro-overlay.hidden {

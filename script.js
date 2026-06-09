@@ -89,6 +89,26 @@
   const modalConfirm = document.getElementById('modal-confirm');
   const modalCancel = document.getElementById('modal-cancel');
 
+  // Grade Range Modal
+  const gradeRangeModal = document.getElementById('grade-range-modal');
+  const gradeRangeCloseBtn = document.getElementById('grade-range-close');
+  const gradeRangeBackdrop = document.getElementById('grade-range-backdrop');
+  const viewGradeRangeBtn = document.getElementById('view-grade-range-btn');
+
+  function openGradeRangeModal() {
+    gradeRangeModal.style.display = 'flex';
+    gradeRangeModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeGradeRangeModal() {
+    gradeRangeModal.style.display = 'none';
+    gradeRangeModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  if (viewGradeRangeBtn) viewGradeRangeBtn.addEventListener('click', openGradeRangeModal);
+  if (gradeRangeCloseBtn) gradeRangeCloseBtn.addEventListener('click', closeGradeRangeModal);
+  if (gradeRangeBackdrop) gradeRangeBackdrop.addEventListener('click', closeGradeRangeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGradeRangeModal(); });
   // --- Initialize Application ---
   function init() {
     const hasExistingState = loadStateFromStorage();

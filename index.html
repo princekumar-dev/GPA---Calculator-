@@ -114,7 +114,7 @@
   <!-- Main Application (Hidden initially) -->
   <main id="main-app" class="page" style="display: none;">
     <!-- Tab Switcher (Segmented Control) -->
-    <div class="segmented-control-container mt-4 sm:mt-8 mb-6">
+    <div class="segmented-control-container mt-8 sm:mt-14 mb-6">
       <div class="segmented-control">
         <div class="segmented-highlight" id="tab-highlight"></div>
         <div class="segmented-buttons">
@@ -215,62 +215,12 @@
                 <!-- Dynamically populated -->
               </div>
 
-              <!-- Grade Range Reference — Mobile Friendly Grid -->
-              <div style="margin-top:14px;border-top:1px solid rgba(203,213,225,0.5);padding-top:12px;">
-                <p style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#94a3b8;margin-bottom:10px;text-align:center;">Grade Range · Anna University Regulation 2021</p>
-
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
-
-                  <!-- O -->
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.6);border-radius:10px;padding:7px 4px;border:1px solid rgba(110,231,183,0.4);">
-                    <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:7px;padding:4px 8px;font-weight:900;font-size:13px;color:#047857;width:100%;text-align:center;">O</div>
-                    <div style="font-size:9px;color:#64748b;font-weight:600;">91–100</div>
-                    <div style="font-size:12px;color:#059669;font-weight:900;">10</div>
-                  </div>
-
-                  <!-- A+ -->
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.6);border-radius:10px;padding:7px 4px;border:1px solid rgba(147,197,253,0.4);">
-                    <div style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:1px solid #93c5fd;border-radius:7px;padding:4px 8px;font-weight:900;font-size:13px;color:#1d4ed8;width:100%;text-align:center;">A+</div>
-                    <div style="font-size:9px;color:#64748b;font-weight:600;">81–90</div>
-                    <div style="font-size:12px;color:#2563eb;font-weight:900;">9</div>
-                  </div>
-
-                  <!-- A -->
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.6);border-radius:10px;padding:7px 4px;border:1px solid rgba(125,211,252,0.4);">
-                    <div style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:1px solid #7dd3fc;border-radius:7px;padding:4px 8px;font-weight:900;font-size:13px;color:#0369a1;width:100%;text-align:center;">A</div>
-                    <div style="font-size:9px;color:#64748b;font-weight:600;">71–80</div>
-                    <div style="font-size:12px;color:#3b82f6;font-weight:900;">8</div>
-                  </div>
-
-                  <!-- B+ -->
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.6);border-radius:10px;padding:7px 4px;border:1px solid rgba(165,180,252,0.4);">
-                    <div style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe);border:1px solid #a5b4fc;border-radius:7px;padding:4px 8px;font-weight:900;font-size:13px;color:#4338ca;width:100%;text-align:center;">B+</div>
-                    <div style="font-size:9px;color:#64748b;font-weight:600;">61–70</div>
-                    <div style="font-size:12px;color:#6366f1;font-weight:900;">7</div>
-                  </div>
-
-                  <!-- B -->
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.6);border-radius:10px;padding:7px 4px;border:1px solid rgba(196,181,253,0.4);">
-                    <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:1px solid #c4b5fd;border-radius:7px;padding:4px 8px;font-weight:900;font-size:13px;color:#6d28d9;width:100%;text-align:center;">B</div>
-                    <div style="font-size:9px;color:#64748b;font-weight:600;">56–60</div>
-                    <div style="font-size:12px;color:#7c3aed;font-weight:900;">6</div>
-                  </div>
-
-                  <!-- C -->
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.6);border-radius:10px;padding:7px 4px;border:1px solid rgba(253,186,116,0.4);">
-                    <div style="background:linear-gradient(135deg,#ffedd5,#fed7aa);border:1px solid #fdba74;border-radius:7px;padding:4px 8px;font-weight:900;font-size:13px;color:#c2410c;width:100%;text-align:center;">C</div>
-                    <div style="font-size:9px;color:#64748b;font-weight:600;">50–55</div>
-                    <div style="font-size:12px;color:#ea580c;font-weight:900;">5</div>
-                  </div>
-
-                  <!-- U -->
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.6);border-radius:10px;padding:7px 4px;border:1px solid rgba(252,165,165,0.4);">
-                    <div style="background:linear-gradient(135deg,#fee2e2,#fecaca);border:1px solid #fca5a5;border-radius:7px;padding:4px 8px;font-weight:900;font-size:13px;color:#b91c1c;width:100%;text-align:center;">U</div>
-                    <div style="font-size:9px;color:#64748b;font-weight:600;">&lt;50</div>
-                    <div style="font-size:12px;color:#dc2626;font-weight:900;">0</div>
-                  </div>
-
-                </div>
+              <!-- Grade Range Button -->
+              <div style="margin-top:14px;border-top:1px solid rgba(203,213,225,0.5);padding-top:12px;text-align:center;">
+                <button id="view-grade-range-btn" type="button" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;border-radius:10px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(99,102,241,0.25);transition:all 0.2s;">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                  View Grade Range
+                </button>
               </div>
             </div>
           </div>
@@ -357,6 +307,88 @@
       <div class="modal-actions flex justify-end gap-3">
         <button id="modal-cancel" class="btn-outline-gray px-4 py-2">Cancel</button>
         <button id="modal-confirm" class="btn-destructive px-4 py-2">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grade Range Modal -->
+  <div id="grade-range-modal" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:500;align-items:center;justify-content:center;padding:16px;">
+    <!-- Backdrop -->
+    <div id="grade-range-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);"></div>
+    <!-- Panel -->
+    <div style="position:relative;z-index:1;background:#fff;border-radius:20px;padding:24px;width:100%;max-width:480px;box-shadow:0 25px 60px rgba(0,0,0,0.2);animation:gradeModalIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:4px;height:20px;background:linear-gradient(to bottom,#3b82f6,#6366f1);border-radius:3px;"></div>
+          <div>
+            <h3 style="font-size:15px;font-weight:800;color:#0f172a;margin:0;">Grade Range</h3>
+            <p style="font-size:11px;color:#94a3b8;font-weight:600;margin:2px 0 0;">Anna University · Regulation 2021</p>
+          </div>
+        </div>
+        <button id="grade-range-close" type="button" style="width:32px;height:32px;border-radius:50%;background:#f1f5f9;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#64748b;transition:all 0.2s;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Grade Cards Grid -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(240,253,244,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(110,231,183,0.5);">
+          <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#047857;width:100%;text-align:center;">O</div>
+          <div style="font-size:10px;color:#64748b;font-weight:600;">91 – 100</div>
+          <div style="font-size:18px;color:#059669;font-weight:900;line-height:1;">10</div>
+          <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(239,246,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(147,197,253,0.5);">
+          <div style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:1px solid #93c5fd;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#1d4ed8;width:100%;text-align:center;">A+</div>
+          <div style="font-size:10px;color:#64748b;font-weight:600;">81 – 90</div>
+          <div style="font-size:18px;color:#2563eb;font-weight:900;line-height:1;">9</div>
+          <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(240,249,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(125,211,252,0.5);">
+          <div style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:1px solid #7dd3fc;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#0369a1;width:100%;text-align:center;">A</div>
+          <div style="font-size:10px;color:#64748b;font-weight:600;">71 – 80</div>
+          <div style="font-size:18px;color:#3b82f6;font-weight:900;line-height:1;">8</div>
+          <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(238,242,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(165,180,252,0.5);">
+          <div style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe);border:1px solid #a5b4fc;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#4338ca;width:100%;text-align:center;">B+</div>
+          <div style="font-size:10px;color:#64748b;font-weight:600;">61 – 70</div>
+          <div style="font-size:18px;color:#6366f1;font-weight:900;line-height:1;">7</div>
+          <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(245,243,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(196,181,253,0.5);">
+          <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:1px solid #c4b5fd;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#6d28d9;width:100%;text-align:center;">B</div>
+          <div style="font-size:10px;color:#64748b;font-weight:600;">56 – 60</div>
+          <div style="font-size:18px;color:#7c3aed;font-weight:900;line-height:1;">6</div>
+          <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,247,237,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(253,186,116,0.5);">
+          <div style="background:linear-gradient(135deg,#ffedd5,#fed7aa);border:1px solid #fdba74;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#c2410c;width:100%;text-align:center;">C</div>
+          <div style="font-size:10px;color:#64748b;font-weight:600;">50 – 55</div>
+          <div style="font-size:18px;color:#ea580c;font-weight:900;line-height:1;">5</div>
+          <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(254,242,242,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(252,165,165,0.5);">
+          <div style="background:linear-gradient(135deg,#fee2e2,#fecaca);border:1px solid #fca5a5;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#b91c1c;width:100%;text-align:center;">U</div>
+          <div style="font-size:10px;color:#64748b;font-weight:600;">&lt; 50</div>
+          <div style="font-size:18px;color:#dc2626;font-weight:900;line-height:1;">0</div>
+          <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
+        </div>
+
+      </div>
+
+      <!-- Footer note -->
+      <div style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;">
+        <svg width="14" height="14" fill="none" stroke="#0369a1" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span style="font-size:10px;color:#0369a1;font-weight:600;">Grades SA and WD are excluded from GPA calculation per AU norms.</span>
       </div>
     </div>
   </div>

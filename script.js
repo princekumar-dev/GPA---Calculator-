@@ -975,11 +975,15 @@
   }
 
   // --- Mobile Swipe to Delete ---
-  let swipeState = { row: null, startX: 0, startTransform: 0, currentX: 0, isSwiping: false, openRow: null };
+  let swipeState = { row: null, startX: 0, startY: 0, startTransform: 0, currentX: 0, isSwiping: false, openRow: null };
 
   function initSwipeToDelete(tbody) {
     tbody.addEventListener('touchstart', e => {
       if (window.innerWidth > 640) return;
+      
+      // Ignore swipe if clicking on an interactive element
+      if (e.target.closest('button, a, input, select, textarea')) return;
+      
       const row = e.target.closest('tr');
       if (!row) return;
 
@@ -993,6 +997,7 @@
 
       swipeState.row = row;
       swipeState.startX = e.touches[0].clientX;
+      swipeState.startY = e.touches[0].clientY;
       swipeState.startTransform = swipeState.openRow === row ? -80 : 0;
       swipeState.currentX = swipeState.startTransform;
       swipeState.isSwiping = true;
@@ -1037,7 +1042,16 @@
 
     tbody.addEventListener('touchmove', e => {
       if (!swipeState.isSwiping || !swipeState.row) return;
+      
       const deltaX = e.touches[0].clientX - swipeState.startX;
+      const deltaY = e.touches[0].clientY - swipeState.startY;
+      
+      // If moving vertically more than horizontally, treat as scroll and abort swipe
+      if (Math.abs(deltaY) > Math.abs(deltaX) * 1.5 && swipeState.startTransform === 0) {
+        swipeState.isSwiping = false;
+        return;
+      }
+      
       let newX = swipeState.startTransform + deltaX;
       
       // Restrict swipe between -100px (left) and 0px (right)

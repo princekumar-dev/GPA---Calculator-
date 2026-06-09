@@ -1,20 +1,26 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>MSEC Academics — GPA & CGPA Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="icon" type="image/png" href="assets/images/mseclogo.png">
   <link rel="stylesheet" href="academics-tailwind.css">
   <link rel="stylesheet" href="styles.css?v=10">
 </head>
+
 <body>
-  
+
   <!-- Top Navigation Bar (Floating pill — matches Academics-2) -->
-  <header class="relative z-[150] glass-card rounded-2xl sm:rounded-[20px] flex items-center justify-between gap-3 sm:gap-4 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-3 sm:py-4 mx-2 sm:mx-3 md:mx-4 top-2 sm:top-3 md:top-4" style="z-index: 150;">
+  <header
+    class="relative z-[150] glass-card rounded-2xl sm:rounded-[20px] flex items-center justify-between gap-3 sm:gap-4 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-3 sm:py-4 mx-2 sm:mx-3 md:mx-4 top-2 sm:top-3 md:top-4"
+    style="z-index: 150;">
     <div class="flex items-center gap-2 md:gap-3">
       <img src="assets/images/mseclogo.png" alt="MSEC Logo" class="h-8 w-8 md:h-10 md:w-10 object-contain">
       <h2 class="text-base sm:text-lg md:text-xl font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">
@@ -29,16 +35,25 @@
     <div class="fixed inset-0 bg-black/40 z-0 pointer-events-none"></div>
     <div class="relative z-10 w-full max-w-md mx-auto mb-auto modal-gap">
       <div class="w-full relative z-10">
-        <div class="backdrop-blur-md bg-white/20 border border-white/30 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-2xl relative overflow-hidden">
+        <div
+          class="backdrop-blur-md bg-white/20 border border-white/30 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-2xl relative overflow-hidden">
           <div class="text-center mb-6 sm:mb-8">
-            <div class="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-4 sm:mb-6">
-              <svg class="w-7 h-7 sm:w-8 sm:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
+            <div
+              class="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-4 sm:mb-6">
+              <svg class="w-7 h-7 sm:w-8 sm:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z">
+                </path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z">
+                </path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222">
+                </path>
               </svg>
             </div>
-            <h1 class="text-2xl sm:text-4xl font-black text-white mb-1.5 sm:mb-2"><span class="wave-text">GPA</span> Calculator</h1>
+            <h1 class="text-2xl sm:text-4xl font-black text-white mb-1.5 sm:mb-2"><span class="wave-text">GPA</span>
+              Calculator</h1>
             <p class="text-gray-100 text-sm sm:text-lg">Choose your semester details to begin</p>
           </div>
 
@@ -46,7 +61,8 @@
             <div class="relative">
               <label for="intro-dept" class="block text-sm font-bold text-white mb-3">Department</label>
               <div class="relative">
-                <select id="intro-dept" class="w-full pl-4 pr-10 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 text-white placeholder:text-gray-200 appearance-none text-ellipsis overflow-hidden whitespace-nowrap">
+                <select id="intro-dept"
+                  class="w-full pl-4 pr-10 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 text-white placeholder:text-gray-200 appearance-none text-ellipsis overflow-hidden whitespace-nowrap">
                   <option value="CSE" style="color:#1e293b;">Computer Science & Engineering (CSE)</option>
                   <option value="IT" style="color:#1e293b;">Information Technology (IT)</option>
                   <option value="ECE" style="color:#1e293b;">Electronics & Communication (ECE)</option>
@@ -55,7 +71,9 @@
                   <option value="CUSTOM" style="color:#1e293b;">Custom Branch (Manually Enter)</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-white">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
                 </div>
               </div>
             </div>
@@ -63,14 +81,17 @@
             <div class="relative">
               <label for="intro-year" class="block text-sm font-bold text-white mb-3">Year</label>
               <div class="relative">
-                <select id="intro-year" class="w-full pl-4 pr-10 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 text-white placeholder:text-gray-200 appearance-none text-ellipsis overflow-hidden whitespace-nowrap">
+                <select id="intro-year"
+                  class="w-full pl-4 pr-10 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 text-white placeholder:text-gray-200 appearance-none text-ellipsis overflow-hidden whitespace-nowrap">
                   <option value="1" style="color:#1e293b;">1st Year</option>
                   <option value="2" style="color:#1e293b;">2nd Year</option>
                   <option value="3" style="color:#1e293b;">3rd Year</option>
                   <option value="4" style="color:#1e293b;">4th Year</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-white">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
                 </div>
               </div>
             </div>
@@ -78,30 +99,37 @@
             <div class="relative">
               <label for="intro-sem" class="block text-sm font-bold text-white mb-3">Semester</label>
               <div class="relative">
-                <select id="intro-sem" class="w-full pl-4 pr-10 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 text-white placeholder:text-gray-200 appearance-none text-ellipsis overflow-hidden whitespace-nowrap">
+                <select id="intro-sem"
+                  class="w-full pl-4 pr-10 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 text-white placeholder:text-gray-200 appearance-none text-ellipsis overflow-hidden whitespace-nowrap">
                   <option value="1" style="color:#1e293b;">Semester 1</option>
                   <option value="2" style="color:#1e293b;">Semester 2</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-white">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
                 </div>
               </div>
             </div>
 
             <div>
               <label class="block text-sm font-bold text-white mb-3">Grading System</label>
-              <div class="w-full px-4 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 text-white/90 cursor-not-allowed select-none flex items-center justify-between">
+              <div
+                class="w-full px-4 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl backdrop-blur-sm bg-white/20 border border-white/30 text-white/90 cursor-not-allowed select-none flex items-center justify-between">
                 <span>Anna University (Regulation 2021)</span>
                 <!-- Lock Icon -->
                 <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                  </path>
                 </svg>
               </div>
               <input type="hidden" id="intro-scale" value="AU">
             </div>
 
             <div class="pt-4">
-              <button id="btn-start" class="w-full py-3.5 sm:py-4 px-6 bg-white/90 backdrop-blur-md border border-white/50 text-blue-600 shadow-lg hover:bg-white hover:shadow-xl text-base sm:text-lg font-bold rounded-xl sm:rounded-2xl transition-all duration-300 md:hover:scale-105 cursor-pointer">
+              <button id="btn-start"
+                class="w-full py-3.5 sm:py-4 px-6 bg-white/90 backdrop-blur-md border border-white/50 text-blue-600 shadow-lg hover:bg-white hover:shadow-xl text-base sm:text-lg font-bold rounded-xl sm:rounded-2xl transition-all duration-300 md:hover:scale-105 cursor-pointer">
                 Let's Get Started
               </button>
             </div>
@@ -114,7 +142,7 @@
   <!-- Main Application (Hidden initially) -->
   <main id="main-app" class="page" style="display: none;">
     <!-- Tab Switcher (Segmented Control) -->
-    <div class="segmented-control-container mt-8 sm:mt-14 mb-6">
+    <div class="segmented-control-container mt-6 sm:mt-10 mb-6">
       <div class="segmented-control">
         <div class="segmented-highlight" id="tab-highlight"></div>
         <div class="segmented-buttons">
@@ -126,7 +154,7 @@
 
     <!-- TAB 1: GPA PLANNER VIEW -->
     <section id="gpa-view" class="tab-view active-view">
-      
+
       <!-- Preset Settings Card (Collapsible or just small display) -->
       <div class="card glass-card mb-6 flex-between">
         <div>
@@ -165,15 +193,24 @@
 
           <div class="controls-row flex gap-3 flex-wrap">
             <button type="button" id="add-course" class="btn-outline-blue flex items-center gap-2">
-              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+              </svg>
               Add Custom Course
             </button>
             <button type="button" id="save-semester" class="btn-success flex items-center gap-2">
-              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5"><path d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5">
+                <path d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
               Save
             </button>
             <button type="button" id="reset" class="btn-destructive flex items-center gap-2">
-              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5">
+                <path
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
               Reset Semester
             </button>
           </div>
@@ -185,9 +222,10 @@
           <div class="clock-content text-center">
             <div class="clock-metric">
               <span class="metric-label text-xs font-bold uppercase tracking-widest text-slate-500">SEMESTER GPA</span>
-              <div class="metric-value font-mono text-5xl font-black text-blue-600 my-2" style="text-shadow: 0 0 15px rgba(59, 130, 246, 0.2);" id="gpa-display">0.00</div>
+              <div class="metric-value font-mono text-5xl font-black text-blue-600 my-2"
+                style="text-shadow: 0 0 15px rgba(59, 130, 246, 0.2);" id="gpa-display">0.00</div>
             </div>
-            
+
             <div class="clock-details flex justify-center gap-4 flex-wrap mt-2">
               <div class="detail-pill">
                 <span class="label text-slate-500 text-sm">Total Credits:</span>
@@ -200,25 +238,37 @@
             </div>
 
             <!-- Grade Distribution -->
-            <div style="margin-top:16px;background:linear-gradient(135deg,rgba(248,250,252,0.9),rgba(241,245,249,0.7));border:1px solid rgba(203,213,225,0.6);border-radius:14px;padding:16px;width:100%;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+            <div
+              style="margin-top:16px;background:linear-gradient(135deg,rgba(248,250,252,0.9),rgba(241,245,249,0.7));border:1px solid rgba(203,213,225,0.6);border-radius:14px;padding:16px;width:100%;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
               <!-- Header -->
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                 <div style="display:flex;align-items:center;gap:6px;">
-                  <div style="width:3px;height:14px;background:linear-gradient(to bottom,#3b82f6,#6366f1);border-radius:2px;"></div>
-                  <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#64748b;">Grade Distribution</span>
+                  <div
+                    style="width:3px;height:14px;background:linear-gradient(to bottom,#3b82f6,#6366f1);border-radius:2px;">
+                  </div>
+                  <span
+                    style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#64748b;">Grade
+                    Distribution</span>
                 </div>
                 <span style="font-size:11px;color:#94a3b8;font-weight:600;" id="grade-dist-summary"></span>
               </div>
 
               <!-- Bars -->
-              <div style="display:flex;align-items:flex-end;justify-content:space-around;gap:6px;height:90px;padding:0 4px;border-bottom:2px solid rgba(203,213,225,0.5);margin-bottom:2px;" id="grade-distribution-bars">
+              <div
+                style="display:flex;align-items:flex-end;justify-content:space-around;gap:6px;height:90px;padding:0 4px;border-bottom:2px solid rgba(203,213,225,0.5);margin-bottom:2px;"
+                id="grade-distribution-bars">
                 <!-- Dynamically populated -->
               </div>
 
               <!-- Grade Range Button -->
-              <div style="margin-top:14px;border-top:1px solid rgba(203,213,225,0.5);padding-top:12px;text-align:center;">
-                <button id="view-grade-range-btn" type="button" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;border-radius:10px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(99,102,241,0.25);transition:all 0.2s;">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <div
+                style="margin-top:14px;border-top:1px solid rgba(203,213,225,0.5);padding-top:12px;text-align:center;">
+                <button id="view-grade-range-btn" type="button"
+                  style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;border:none;border-radius:10px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.04em;box-shadow:0 2px 8px rgba(99,102,241,0.25);transition:all 0.2s;">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
                   View Grade Range
                 </button>
               </div>
@@ -257,8 +307,11 @@
                 </tbody>
               </table>
             </div>
-            <button type="button" id="cgpa-add-row" class="btn-outline-blue w-full mt-4 flex justify-center items-center gap-2">
-              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            <button type="button" id="cgpa-add-row"
+              class="btn-outline-blue w-full mt-4 flex justify-center items-center gap-2">
+              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+              </svg>
               Add Semester Row
             </button>
           </div>
@@ -267,9 +320,11 @@
           <div class="cgpa-display-panel station-clock-card self-start">
             <div class="clock-accent-line" style="background: linear-gradient(90deg, #34d399, #10b981, #059669);"></div>
             <div class="clock-content text-center">
-              <span class="metric-label text-xs font-bold uppercase tracking-widest text-slate-500">CUMULATIVE CGPA</span>
-              <div class="metric-value font-mono text-5xl font-black text-emerald-600 my-2" style="text-shadow: 0 0 15px rgba(16, 185, 129, 0.2);" id="cgpa-display-val">0.00</div>
-              
+              <span class="metric-label text-xs font-bold uppercase tracking-widest text-slate-500">CUMULATIVE
+                CGPA</span>
+              <div class="metric-value font-mono text-5xl font-black text-emerald-600 my-2"
+                style="text-shadow: 0 0 15px rgba(16, 185, 129, 0.2);" id="cgpa-display-val">0.00</div>
+
               <div class="cgpa-details mt-4 flex flex-col gap-2 items-center">
                 <div class="detail-pill">
                   <span class="label text-slate-500 text-sm">Total CGPA Credits:</span>
@@ -282,7 +337,9 @@
               </div>
 
               <!-- Motivational Box -->
-              <div class="cgpa-motivational-box mt-5 p-3 rounded-lg text-sm bg-emerald-500/10 border-l-4 border-emerald-500 text-slate-700 text-left" id="cgpa-status-box">
+              <div
+                class="cgpa-motivational-box mt-5 p-3 rounded-lg text-sm bg-emerald-500/10 border-l-4 border-emerald-500 text-slate-700 text-left"
+                id="cgpa-status-box">
                 No semester data added. Add semesters to calculate overall standing.
               </div>
             </div>
@@ -312,72 +369,102 @@
   </div>
 
   <!-- Grade Range Modal -->
-  <div id="grade-range-modal" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:500;align-items:center;justify-content:center;padding:16px;">
+  <div id="grade-range-modal" aria-hidden="true"
+    style="display:none;position:fixed;inset:0;z-index:500;align-items:center;justify-content:center;padding:16px;">
     <!-- Backdrop -->
-    <div id="grade-range-backdrop" style="position:absolute;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);"></div>
+    <div id="grade-range-backdrop"
+      style="position:absolute;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);">
+    </div>
     <!-- Panel -->
-    <div style="position:relative;z-index:1;background:#fff;border-radius:20px;padding:24px;width:100%;max-width:480px;box-shadow:0 25px 60px rgba(0,0,0,0.2);animation:gradeModalIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
+    <div
+      style="position:relative;z-index:1;background:#fff;border-radius:20px;padding:24px;width:100%;max-width:480px;box-shadow:0 25px 60px rgba(0,0,0,0.2);animation:gradeModalIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
       <!-- Header -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:4px;height:20px;background:linear-gradient(to bottom,#3b82f6,#6366f1);border-radius:3px;"></div>
+          <div style="width:4px;height:20px;background:linear-gradient(to bottom,#3b82f6,#6366f1);border-radius:3px;">
+          </div>
           <div>
             <h3 style="font-size:15px;font-weight:800;color:#0f172a;margin:0;">Grade Range</h3>
-            <p style="font-size:11px;color:#94a3b8;font-weight:600;margin:2px 0 0;">Anna University · Regulation 2021</p>
+            <p style="font-size:11px;color:#94a3b8;font-weight:600;margin:2px 0 0;">Anna University · Regulation 2021
+            </p>
           </div>
         </div>
-        <button id="grade-range-close" type="button" style="width:32px;height:32px;border-radius:50%;background:#f1f5f9;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#64748b;transition:all 0.2s;">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        <button id="grade-range-close" type="button"
+          style="width:32px;height:32px;border-radius:50%;background:#f1f5f9;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#64748b;transition:all 0.2s;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
       </div>
 
       <!-- Grade Cards Grid -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(240,253,244,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(110,231,183,0.5);">
-          <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#047857;width:100%;text-align:center;">O</div>
+        <div
+          style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(240,253,244,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(110,231,183,0.5);">
+          <div
+            style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #6ee7b7;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#047857;width:100%;text-align:center;">
+            O</div>
           <div style="font-size:10px;color:#64748b;font-weight:600;">91 – 100</div>
           <div style="font-size:18px;color:#059669;font-weight:900;line-height:1;">10</div>
           <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(239,246,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(147,197,253,0.5);">
-          <div style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:1px solid #93c5fd;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#1d4ed8;width:100%;text-align:center;">A+</div>
+        <div
+          style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(239,246,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(147,197,253,0.5);">
+          <div
+            style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:1px solid #93c5fd;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#1d4ed8;width:100%;text-align:center;">
+            A+</div>
           <div style="font-size:10px;color:#64748b;font-weight:600;">81 – 90</div>
           <div style="font-size:18px;color:#2563eb;font-weight:900;line-height:1;">9</div>
           <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(240,249,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(125,211,252,0.5);">
-          <div style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:1px solid #7dd3fc;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#0369a1;width:100%;text-align:center;">A</div>
+        <div
+          style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(240,249,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(125,211,252,0.5);">
+          <div
+            style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:1px solid #7dd3fc;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#0369a1;width:100%;text-align:center;">
+            A</div>
           <div style="font-size:10px;color:#64748b;font-weight:600;">71 – 80</div>
           <div style="font-size:18px;color:#3b82f6;font-weight:900;line-height:1;">8</div>
           <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(238,242,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(165,180,252,0.5);">
-          <div style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe);border:1px solid #a5b4fc;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#4338ca;width:100%;text-align:center;">B+</div>
+        <div
+          style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(238,242,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(165,180,252,0.5);">
+          <div
+            style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe);border:1px solid #a5b4fc;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#4338ca;width:100%;text-align:center;">
+            B+</div>
           <div style="font-size:10px;color:#64748b;font-weight:600;">61 – 70</div>
           <div style="font-size:18px;color:#6366f1;font-weight:900;line-height:1;">7</div>
           <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(245,243,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(196,181,253,0.5);">
-          <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:1px solid #c4b5fd;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#6d28d9;width:100%;text-align:center;">B</div>
+        <div
+          style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(245,243,255,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(196,181,253,0.5);">
+          <div
+            style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:1px solid #c4b5fd;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#6d28d9;width:100%;text-align:center;">
+            B</div>
           <div style="font-size:10px;color:#64748b;font-weight:600;">56 – 60</div>
           <div style="font-size:18px;color:#7c3aed;font-weight:900;line-height:1;">6</div>
           <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,247,237,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(253,186,116,0.5);">
-          <div style="background:linear-gradient(135deg,#ffedd5,#fed7aa);border:1px solid #fdba74;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#c2410c;width:100%;text-align:center;">C</div>
+        <div
+          style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,247,237,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(253,186,116,0.5);">
+          <div
+            style="background:linear-gradient(135deg,#ffedd5,#fed7aa);border:1px solid #fdba74;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#c2410c;width:100%;text-align:center;">
+            C</div>
           <div style="font-size:10px;color:#64748b;font-weight:600;">50 – 55</div>
           <div style="font-size:18px;color:#ea580c;font-weight:900;line-height:1;">5</div>
           <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
         </div>
 
-        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(254,242,242,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(252,165,165,0.5);">
-          <div style="background:linear-gradient(135deg,#fee2e2,#fecaca);border:1px solid #fca5a5;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#b91c1c;width:100%;text-align:center;">U</div>
+        <div
+          style="display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(254,242,242,0.8);border-radius:12px;padding:10px 6px;border:1px solid rgba(252,165,165,0.5);">
+          <div
+            style="background:linear-gradient(135deg,#fee2e2,#fecaca);border:1px solid #fca5a5;border-radius:8px;padding:5px 10px;font-weight:900;font-size:16px;color:#b91c1c;width:100%;text-align:center;">
+            U</div>
           <div style="font-size:10px;color:#64748b;font-weight:600;">&lt; 50</div>
           <div style="font-size:18px;color:#dc2626;font-weight:900;line-height:1;">0</div>
           <div style="font-size:9px;color:#94a3b8;font-weight:500;">GPA Points</div>
@@ -386,9 +473,14 @@
       </div>
 
       <!-- Footer note -->
-      <div style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;">
-        <svg width="14" height="14" fill="none" stroke="#0369a1" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span style="font-size:10px;color:#0369a1;font-weight:600;">Grades SA and WD are excluded from GPA calculation per AU norms.</span>
+      <div
+        style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;">
+        <svg width="14" height="14" fill="none" stroke="#0369a1" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span style="font-size:10px;color:#0369a1;font-weight:600;">Grades SA and WD are excluded from GPA calculation
+          per AU norms.</span>
       </div>
     </div>
   </div>
@@ -396,4 +488,5 @@
   <script src="courses_db.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

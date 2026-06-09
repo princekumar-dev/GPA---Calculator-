@@ -975,7 +975,17 @@
   }
 
   // --- Mobile Swipe to Delete ---
-  let swipeState = { row: null, startX: 0, startY: 0, startTransform: 0, currentX: 0, isSwiping: false, openRow: null };
+  let swipeState = { 
+    row: null, 
+    startX: 0, 
+    startY: 0, 
+    startTransform: 0, 
+    currentX: 0, 
+    isSwiping: false, 
+    openRow: null, 
+    directionChecked: false, 
+    isVerticalScroll: false 
+  };
 
   function initSwipeToDelete(tbody) {
     tbody.addEventListener('touchstart', e => {
@@ -990,6 +1000,7 @@
       // Close previously open row if different
       if (swipeState.openRow && swipeState.openRow !== row) {
         swipeState.openRow.style.transform = 'translateX(0)';
+        swipeState.openRow.style.boxShadow = '';
         swipeState.openRow = null;
         const bg = document.getElementById('global-swipe-bg');
         if (bg) bg.style.display = 'none';
@@ -1001,58 +1012,80 @@
       swipeState.startTransform = swipeState.openRow === row ? -160 : 0;
       swipeState.currentX = swipeState.startTransform;
       swipeState.isSwiping = true;
+      swipeState.directionChecked = false;
+      swipeState.isVerticalScroll = false;
+      
       row.style.transition = 'none';
-      row.style.position = 'relative';
-      row.style.zIndex = '2';
-
-      let bg = document.getElementById('global-swipe-bg');
-      if (!bg) {
-        bg = document.createElement('div');
-        bg.id = 'global-swipe-bg';
-        bg.innerHTML = '<div style="position:absolute; right:0; top:0; bottom:0; width:180px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px; box-sizing:border-box;"><button style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; height:100%; max-height:48px; font-weight:600; font-size:0.875rem; border-radius:8px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); background-color:#ef4444; color:white; border:none; cursor:pointer;"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg><span>Delete</span></button></div>';
-        bg.style.position = 'absolute';
-        bg.style.backgroundColor = 'transparent';
-        bg.style.borderRadius = '16px';
-        bg.style.display = 'none';
-        bg.style.alignItems = 'center';
-        bg.style.justifyContent = 'flex-end';
-        bg.style.zIndex = '1';
-        document.body.appendChild(bg);
-      }
-      
-      const rect = row.getBoundingClientRect();
-      bg.style.top = (rect.top + window.scrollY) + 'px';
-      bg.style.left = (rect.left + window.scrollX) + 'px';
-      bg.style.width = rect.width + 'px';
-      bg.style.height = rect.height + 'px';
-      bg.style.display = 'flex';
-      
-      // When delete is clicked
-      bg.onclick = (e) => {
-        e.preventDefault();
-        const activeRow = swipeState.openRow || swipeState.row;
-        if (activeRow) {
-          const deleteBtn = activeRow.querySelector('.btn-row-remove');
-          if (deleteBtn) deleteBtn.click();
-          activeRow.style.transform = 'translateX(0)';
-        }
-        bg.style.display = 'none';
-        swipeState.openRow = null;
-      };
     }, {passive: true});
 
     tbody.addEventListener('touchmove', e => {
       if (!swipeState.isSwiping || !swipeState.row) return;
       
-      const deltaX = e.touches[0].clientX - swipeState.startX;
-      const deltaY = e.touches[0].clientY - swipeState.startY;
-      
-      // If moving vertically more than horizontally, treat as scroll and abort swipe
-      if (Math.abs(deltaY) > Math.abs(deltaX) * 1.5 && swipeState.startTransform === 0) {
-        swipeState.isSwiping = false;
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const deltaX = currentX - swipeState.startX;
+      const deltaY = currentY - swipeState.startY;
+
+      // Detect direction on first movements (at least 8px threshold)
+      if (!swipeState.directionChecked) {
+        if (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8) {
+          if (Math.abs(deltaY) > Math.abs(deltaX)) {
+            // Vertical scroll: abort swipe
+            swipeState.isVerticalScroll = true;
+            swipeState.isSwiping = false;
+          } else {
+            // Horizontal swipe: setup background
+            swipeState.directionChecked = true;
+            const row = swipeState.row;
+            row.style.position = 'relative';
+            row.style.zIndex = '2';
+
+            let bg = document.getElementById('global-swipe-bg');
+            if (!bg) {
+              bg = document.createElement('div');
+              bg.id = 'global-swipe-bg';
+              bg.innerHTML = '<div style="position:absolute; right:0; top:0; bottom:0; width:180px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px; box-sizing:border-box;"><button style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; height:100%; max-height:48px; font-weight:600; font-size:0.875rem; border-radius:8px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); background-color:#ef4444; color:white; border:none; cursor:pointer;"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg><span>Delete</span></button></div>';
+              bg.style.position = 'absolute';
+              bg.style.backgroundColor = 'transparent';
+              bg.style.borderRadius = '16px';
+              bg.style.display = 'none';
+              bg.style.alignItems = 'center';
+              bg.style.justifyContent = 'flex-end';
+              bg.style.zIndex = '1';
+            }
+
+            if (bg.parentNode !== row.parentNode) {
+              row.parentNode.appendChild(bg);
+            }
+
+            row.parentNode.style.position = 'relative';
+            bg.style.top = row.offsetTop + 'px';
+            bg.style.left = row.offsetLeft + 'px';
+            bg.style.width = row.offsetWidth + 'px';
+            bg.style.height = row.offsetHeight + 'px';
+            bg.style.display = 'flex';
+
+            bg.onclick = (event) => {
+              event.preventDefault();
+              const activeRow = swipeState.openRow || swipeState.row;
+              if (activeRow) {
+                const deleteBtn = activeRow.querySelector('.btn-row-remove');
+                if (deleteBtn) deleteBtn.click();
+                activeRow.style.transform = 'translateX(0)';
+              }
+              bg.style.display = 'none';
+              swipeState.openRow = null;
+            };
+          }
+        }
         return;
       }
-      
+
+      if (swipeState.isVerticalScroll) return;
+
+      // Lock vertical scrolling while swiping horizontally
+      if (e.cancelable) e.preventDefault();
+
       let newX = swipeState.startTransform + deltaX;
       
       // Restrict swipe between -200px (left) and 0px (right)
@@ -1061,32 +1094,42 @@
       
       swipeState.currentX = newX;
       swipeState.row.style.transform = `translateX(${swipeState.currentX}px)`;
-    }, {passive: true});
+    }, {passive: false});
 
     tbody.addEventListener('touchend', e => {
-      if (!swipeState.isSwiping || !swipeState.row) return;
-      swipeState.isSwiping = false;
+      if (!swipeState.row) return;
+
       const row = swipeState.row;
       row.style.transition = 'transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s';
-      
-      if (swipeState.currentX <= -50) {
-        // Snap open
-        row.style.transform = `translateX(-160px)`;
-        row.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
-        swipeState.openRow = row;
+
+      if (swipeState.isSwiping && swipeState.directionChecked && !swipeState.isVerticalScroll) {
+        swipeState.isSwiping = false;
+        if (swipeState.currentX <= -50) {
+          // Snap open
+          row.style.transform = `translateX(-160px)`;
+          row.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+          swipeState.openRow = row;
+        } else {
+          // Snap closed
+          row.style.transform = `translateX(0)`;
+          row.style.boxShadow = '';
+          swipeState.openRow = null;
+          setTimeout(() => {
+            if (!swipeState.openRow) {
+              const bg = document.getElementById('global-swipe-bg');
+              if (bg) bg.style.display = 'none';
+            }
+          }, 300);
+        }
       } else {
-        // Snap closed
-        row.style.transform = `translateX(0)`;
-        row.style.boxShadow = '';
-        swipeState.openRow = null;
-        setTimeout(() => {
-          if (!swipeState.openRow) {
-            const bg = document.getElementById('global-swipe-bg');
-            if (bg) bg.style.display = 'none';
-          }
-        }, 300);
+        // Just clean up if it was a vertical scroll or simple tap
+        if (swipeState.openRow !== row) {
+          row.style.transform = 'translateX(0)';
+          row.style.boxShadow = '';
+        }
       }
       swipeState.row = null;
+      swipeState.isSwiping = false;
     });
   }
 

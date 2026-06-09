@@ -539,6 +539,10 @@ select {
     margin-right: auto;
     font-weight: 600;
   }
+  /* Override for CGPA table — 3rd column is GPA, not Grade */
+  #cgpa-table tr td:nth-child(3)::before {
+    content: "GPA:";
+  }
   /* Clean inputs with subtle borders */
   tr td:not(:first-child):not(:last-child) input,
   tr td:not(:first-child):not(:last-child) select { 

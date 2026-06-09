@@ -1013,6 +1013,10 @@
       
       // Ignore swipe if clicking on buttons or links
       if (e.target.closest('button, a')) return;
+
+      // Ignore swipe if touch starts on the course name column (let user scroll the name)
+      const firstTd = e.target.closest('td');
+      if (firstTd && firstTd.cellIndex === 0) return;
       
       const row = e.target.closest('tr');
       if (!row) return;

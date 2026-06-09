@@ -337,27 +337,51 @@
   }
 
   // --- Preset Loader ---
+  // Extract course code prefix (e.g. "U24CS101") from a course name for fuzzy matching
+  function extractCourseCode(name) {
+    if (!name) return null;
+    const match = name.trim().match(/^([A-Z0-9]{5,10})/);
+    return match ? match[1] : null;
+  }
+
   function restoreMissingPresets() {
     const branchData = window.COURSES_DB[state.dept];
-    if (branchData && branchData.semesters && branchData.semesters[state.sem]) {
-      const presets = branchData.semesters[state.sem];
-      const newCourses = [];
-      presets.forEach(presetCourse => {
-        const existing = state.courses.find(c => c.name === presetCourse.name);
-        if (existing) {
-          newCourses.push(existing);
-        } else {
-          newCourses.push({ name: presetCourse.name, credits: presetCourse.credits, grade: '', isPreset: true });
-        }
-      });
-      state.courses.forEach(c => {
-        const isPresetCourse = presets.some(p => p.name === c.name);
-        if (!isPresetCourse) {
-          newCourses.push(c);
-        }
-      });
-      state.courses = newCourses;
-    }
+    if (!branchData || !branchData.semesters || !branchData.semesters[state.sem]) return;
+
+    const dbSubjects = branchData.semesters[state.sem];
+    const savedCourses = state.courses || [];
+
+    // Build a lookup of saved grades: by exact name, and by course code prefix
+    const savedByName = {};
+    const savedByCode = {};
+    savedCourses.forEach(c => {
+      if (c.name) savedByName[c.name.trim()] = c;
+      const code = extractCourseCode(c.name);
+      if (code) savedByCode[code] = c;
+    });
+
+    // Always start from DB subjects — ensures ALL subjects appear
+    const newCourses = dbSubjects.map(dbCourse => {
+      const savedByExact = savedByName[dbCourse.name.trim()];
+      const code = extractCourseCode(dbCourse.name);
+      const savedByCodeMatch = code ? savedByCode[code] : null;
+      const saved = savedByExact || savedByCodeMatch;
+      return {
+        name: dbCourse.name,            // always use the DB name (canonical)
+        credits: dbCourse.credits,      // always use the DB credits (canonical)
+        grade: saved ? (saved.grade || '') : '',
+        isPreset: true
+      };
+    });
+
+    // Append any purely custom courses the user added themselves
+    savedCourses.forEach(c => {
+      if (!c.isPreset) {
+        newCourses.push(c);
+      }
+    });
+
+    state.courses = newCourses;
   }
 
   function loadPresetCourses(dept, sem, showToastAlert = true) {
@@ -365,9 +389,36 @@
     const branchData = window.COURSES_DB[dept];
 
     if (branchData && branchData.semesters && branchData.semesters[sem]) {
-      const courses = branchData.semesters[sem];
-      courses.forEach(c => {
-        createCourseRow({ name: c.name, credits: c.credits, grade: '', isPreset: true });
+      const dbSubjects = branchData.semesters[sem];
+
+      // Try to restore saved grades if this semester was previously saved
+      const semKey = `${dept}_${sem}`;
+      const savedEntry = state.savedSemesters && state.savedSemesters[semKey];
+      const savedCourses = savedEntry ? (savedEntry.courses || []) : [];
+      const savedByName = {};
+      const savedByCode = {};
+      savedCourses.forEach(c => {
+        if (c.name) savedByName[c.name.trim()] = c;
+        const code = extractCourseCode(c.name);
+        if (code) savedByCode[code] = c;
+      });
+
+      dbSubjects.forEach(c => {
+        const savedByExact = savedByName[c.name.trim()];
+        const code = extractCourseCode(c.name);
+        const savedByCodeMatch = code ? savedByCode[code] : null;
+        const saved = savedByExact || savedByCodeMatch;
+        createCourseRow({
+          name: c.name,
+          credits: c.credits,
+          grade: saved ? (saved.grade || '') : '',
+          isPreset: true
+        });
+      });
+
+      // Also re-add any purely custom courses the user added
+      savedCourses.forEach(c => {
+        if (!c.isPreset) createCourseRow(c);
       });
 
       if (showToastAlert) {

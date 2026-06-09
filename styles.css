@@ -35,6 +35,7 @@
 html, body {
   overflow: visible !important;
   height: auto !important;
+  overscroll-behavior: none;
 }
 
 body {

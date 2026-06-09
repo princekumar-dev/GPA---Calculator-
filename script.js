@@ -998,7 +998,7 @@
       swipeState.row = row;
       swipeState.startX = e.touches[0].clientX;
       swipeState.startY = e.touches[0].clientY;
-      swipeState.startTransform = swipeState.openRow === row ? -80 : 0;
+      swipeState.startTransform = swipeState.openRow === row ? -160 : 0;
       swipeState.currentX = swipeState.startTransform;
       swipeState.isSwiping = true;
       row.style.transition = 'none';
@@ -1009,8 +1009,9 @@
       if (!bg) {
         bg = document.createElement('div');
         bg.id = 'global-swipe-bg';
-        bg.innerHTML = '<div style="width:80px; height:100%; display:flex; align-items:center; justify-content:center; background-color:#ef4444; color:white; font-weight:bold; font-size:0.95rem; border-top-right-radius:16px; border-bottom-right-radius:16px; box-shadow:inset 0 0 10px rgba(0,0,0,0.1);">Delete</div>';
+        bg.innerHTML = '<div style="position:absolute; right:0; top:0; bottom:0; width:180px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px; box-sizing:border-box;"><button style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; height:100%; max-height:48px; font-weight:600; font-size:0.875rem; border-radius:8px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); background-color:#ef4444; color:white; border:none; cursor:pointer;"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg><span>Delete</span></button></div>';
         bg.style.position = 'absolute';
+        bg.style.backgroundColor = 'transparent';
         bg.style.borderRadius = '16px';
         bg.style.display = 'none';
         bg.style.alignItems = 'center';
@@ -1054,9 +1055,9 @@
       
       let newX = swipeState.startTransform + deltaX;
       
-      // Restrict swipe between -100px (left) and 0px (right)
+      // Restrict swipe between -200px (left) and 0px (right)
       if (newX > 0) newX = 0;
-      if (newX < -100) newX = -100;
+      if (newX < -200) newX = -200;
       
       swipeState.currentX = newX;
       swipeState.row.style.transform = `translateX(${swipeState.currentX}px)`;
@@ -1066,15 +1067,17 @@
       if (!swipeState.isSwiping || !swipeState.row) return;
       swipeState.isSwiping = false;
       const row = swipeState.row;
-      row.style.transition = 'transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)';
+      row.style.transition = 'transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s';
       
-      if (swipeState.currentX <= -40) {
+      if (swipeState.currentX <= -50) {
         // Snap open
-        row.style.transform = `translateX(-80px)`;
+        row.style.transform = `translateX(-160px)`;
+        row.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
         swipeState.openRow = row;
       } else {
         // Snap closed
         row.style.transform = `translateX(0)`;
+        row.style.boxShadow = '';
         swipeState.openRow = null;
         setTimeout(() => {
           if (!swipeState.openRow) {

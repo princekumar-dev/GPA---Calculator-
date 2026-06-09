@@ -196,7 +196,10 @@
     state.savedSemesters[semKey] = {
       courses: collectCourses(),
       gpa: state.currentGpa || 0,
-      credits: state.currentEarnedCredits || 0
+      // Use total credits (all subjects) — not just graded — so CGPA always has correct totals
+      credits: (state.currentTotalCredits > 0)
+        ? state.currentTotalCredits
+        : getPresetCreditsForSem(state.dept, state.sem)
     };
     
     saveStateToStorage();
@@ -220,7 +223,8 @@
   function syncCgpaTracker() {
     const targetSemCount = parseInt(state.sem) || 1;
     state.cgpaSemesters = state.cgpaSemesters || [];
-    
+
+    // Grow the array if needed
     while (state.cgpaSemesters.length < targetSemCount) {
       const semNum = state.cgpaSemesters.length + 1;
       state.cgpaSemesters.push({
@@ -229,17 +233,25 @@
         gpa: 0
       });
     }
-    
+
+    // Refresh ALL entries — always use savedSemesters data if available,
+    // otherwise always reload preset credits (never keep stale 0-credits)
     for (let i = 1; i <= state.cgpaSemesters.length; i++) {
       const semKey = `${state.dept}_${i}`;
       if (state.savedSemesters && state.savedSemesters[semKey]) {
-        state.cgpaSemesters[i - 1].gpa = state.savedSemesters[semKey].gpa;
-        state.cgpaSemesters[i - 1].credits = state.savedSemesters[semKey].credits;
+        // Real saved data exists — use it
+        state.cgpaSemesters[i - 1].gpa = state.savedSemesters[semKey].gpa || 0;
+        state.cgpaSemesters[i - 1].credits = state.savedSemesters[semKey].credits || getPresetCreditsForSem(state.dept, i.toString());
       } else {
+        // No saved data — always restore preset credits (prevents stale 0s)
         state.cgpaSemesters[i - 1].credits = getPresetCreditsForSem(state.dept, i.toString());
+        // Keep gpa as-is if user manually entered something, only zero if never set
+        if (state.cgpaSemesters[i - 1].gpa == null) {
+          state.cgpaSemesters[i - 1].gpa = 0;
+        }
       }
     }
-    
+
     saveCgpaState();
     if (cgpaView.classList.contains('active-view')) {
       renderCgpaRows();
@@ -521,6 +533,7 @@
     // Save to state for easy CGPA sync
     state.currentGpa = parseFloat(gpa.toFixed(2));
     state.currentEarnedCredits = earnedCredits;
+    state.currentTotalCredits = totalCredits;  // all credits (graded + ungraded)
 
     gpaDisplay.textContent = earnedCredits > 0 ? gpa.toFixed(2) : '0.00';
     totalCreditsEl.textContent = totalCredits.toFixed(2);
@@ -738,11 +751,18 @@
 
   function collectCgpaData() {
     const rows = Array.from(cgpaTbody.querySelectorAll('tr'));
-    state.cgpaSemesters = rows.map(r => {
+    state.cgpaSemesters = rows.map((r, idx) => {
+      const creditsRaw = r.querySelector('.cgpa-credits').value;
+      const gpaRaw = r.querySelector('.cgpa-gpa').value;
+      // Fall back to preset credits if input is blank/zero so we never store 0
+      const parsedCredits = parseFloat(creditsRaw);
+      const credits = (!isNaN(parsedCredits) && parsedCredits > 0)
+        ? parsedCredits
+        : getPresetCreditsForSem(state.dept, (idx + 1).toString());
       return {
         semName: r.querySelector('.cgpa-sem-name').value,
-        credits: parseFloat(r.querySelector('.cgpa-credits').value) || 0,
-        gpa: parseFloat(r.querySelector('.cgpa-gpa').value) || 0
+        credits: credits,
+        gpa: parseFloat(gpaRaw) || 0
       };
     });
   }

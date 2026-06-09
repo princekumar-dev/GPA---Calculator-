@@ -30,7 +30,7 @@
 
   // Default State
   let state = {
-    dept: 'CSE',
+    dept: 'B.E CSE',
     sem: '1',
     scale: 'AU',
     targetGpa: 8.5,
@@ -38,7 +38,10 @@
     cgpaSemesters: [
       { semName: 'Semester 1', credits: 22, gpa: 8.2 },
       { semName: 'Semester 2', credits: 26, gpa: 8.4 }
-    ]
+    ],
+    savedSemesters: {},
+    currentGpa: 0,
+    currentEarnedCredits: 0
   };
 
   // DOM Elements
@@ -64,6 +67,7 @@
 
   const coursesTbody = document.querySelector('#courses-table tbody');
   const addCourseBtn = document.getElementById('add-course');
+  const saveSemesterBtn = document.getElementById('save-semester');
   const resetBtn = document.getElementById('reset');
   const gpaDisplay = document.getElementById('gpa-display');
   const totalCreditsEl = document.getElementById('total-credits');
@@ -116,6 +120,7 @@
     if (hasExistingState && !isChangingSetup) {
       introOverlay.classList.add('hidden');
       introOverlay.classList.remove('active');
+      introOverlay.style.display = 'none';
       mainApp.style.display = 'block';
     }
 
@@ -137,17 +142,13 @@
 
   function startApp() {
     const isChanged = state.dept !== deptSelect.value || state.sem !== semSelect.value || state.scale !== scaleSelect.value;
-
+    
     if (isChanged && state.courses && state.courses.length > 0) {
-      showConfirm('Changing the setup will reset your current courses and grades. Continue?', 'Reset Warning')
-        .then(confirm => {
-          if (confirm) {
-            applySetupAndStart(true);
-          }
-        });
-    } else {
-      applySetupAndStart(isChanged);
+      // Auto-save current semester before switching instead of prompting for reset
+      saveCurrentSemesterMarks(true);
     }
+    
+    applySetupAndStart(isChanged);
   }
 
   function applySetupAndStart(needsReload) {
@@ -158,12 +159,86 @@
     updatePresetTitleDisplay();
 
     if (needsReload || !state.courses || state.courses.length === 0) {
-      loadPresetCourses(state.dept, state.sem, false);
+      const semKey = `${state.dept}_${state.sem}`;
+      state.savedSemesters = state.savedSemesters || {};
+      
+      if (state.savedSemesters[semKey]) {
+        state.courses = state.savedSemesters[semKey].courses;
+        renderCourses();
+        updateGpaCalculation();
+        showToast(`Loaded saved marks for Semester ${state.sem}.`);
+      } else {
+        loadPresetCourses(state.dept, state.sem, false);
+      }
     }
 
-    introOverlay.classList.add('hidden');
     introOverlay.classList.remove('active');
+    introOverlay.classList.add('hidden');
     mainApp.style.display = 'block';
+    
+    setTimeout(() => {
+      introOverlay.style.display = 'none';
+      updateGpaCalculation();
+    }, 400);
+  }
+
+  function saveCurrentSemesterMarks(silent = false) {
+    updateGpaCalculation();
+    const semKey = `${state.dept}_${state.sem}`;
+    
+    state.savedSemesters = state.savedSemesters || {};
+    state.savedSemesters[semKey] = {
+      courses: collectCourses(),
+      gpa: state.currentGpa || 0,
+      credits: state.currentEarnedCredits || 0
+    };
+    
+    saveStateToStorage();
+    syncCgpaTracker();
+    
+    if (!silent) {
+      showToast(`Semester ${state.sem} marks successfully saved!`);
+    }
+  }
+
+  function getPresetCreditsForSem(dept, sem) {
+    const normalizedDept = dept === 'B.E CSE' ? 'CSE' : dept;
+    const branchData = window.COURSES_DB[normalizedDept];
+    if (branchData && branchData.semesters && branchData.semesters[sem]) {
+      const courses = branchData.semesters[sem];
+      return courses.reduce((sum, c) => sum + (parseFloat(c.credits) || 0), 0);
+    }
+    return 22; // default fallback if not found
+  }
+
+  function syncCgpaTracker() {
+    const targetSemCount = parseInt(state.sem) || 1;
+    state.cgpaSemesters = state.cgpaSemesters || [];
+    
+    while (state.cgpaSemesters.length < targetSemCount) {
+      const semNum = state.cgpaSemesters.length + 1;
+      state.cgpaSemesters.push({
+        semName: `Semester ${semNum}`,
+        credits: getPresetCreditsForSem(state.dept, semNum.toString()),
+        gpa: 0
+      });
+    }
+    
+    for (let i = 1; i <= state.cgpaSemesters.length; i++) {
+      const semKey = `${state.dept}_${i}`;
+      if (state.savedSemesters && state.savedSemesters[semKey]) {
+        state.cgpaSemesters[i - 1].gpa = state.savedSemesters[semKey].gpa;
+        state.cgpaSemesters[i - 1].credits = state.savedSemesters[semKey].credits;
+      } else {
+        state.cgpaSemesters[i - 1].credits = getPresetCreditsForSem(state.dept, i.toString());
+      }
+    }
+    
+    saveCgpaState();
+    if (cgpaView.classList.contains('active-view')) {
+      renderCgpaRows();
+      updateCgpaCalculation();
+    }
   }
 
   function updateSemestersByYear() {
@@ -258,18 +333,21 @@
     // Choose grade options based on selected scale
     let gradeOptions = '<option value="">Yet to decide</option>';
     const currentMap = state.scale === 'AU' ? gradeMapAU : gradeMapUS;
-
     Object.keys(currentMap).forEach(grade => {
       const selectedAttr = (data.grade === grade) ? 'selected' : '';
       gradeOptions += `<option value="${grade}" ${selectedAttr}>${grade}</option>`;
     });
 
-    // Retroactive fix for older localStorage saves that lack the isPreset flag
-    if (data.isPreset === undefined) {
-      data.isPreset = (data.name && data.name !== '' && !data.name.toLowerCase().includes('custom subject'));
+    // Aggressive retroactive fix for older localStorage saves where isPreset might be explicitly false
+    let isPreset = data.isPreset;
+    if (!isPreset && data.name) {
+      // If it starts with a standard course code format (e.g., U24EN201), it's a predefined preset
+      if (/^[A-Z0-9]{4,8}\s/.test(data.name)) {
+        isPreset = true;
+      }
     }
 
-    const readonlyAttr = data.isPreset ? 'readonly' : '';
+    const readonlyAttr = isPreset ? 'readonly' : '';
 
     tr.innerHTML = `
       <td>
@@ -410,6 +488,11 @@
 
     // Compute GPA
     const gpa = earnedCredits > 0 ? (totalPoints / earnedCredits) : 0;
+    
+    // Save to state for easy CGPA sync
+    state.currentGpa = parseFloat(gpa.toFixed(2));
+    state.currentEarnedCredits = earnedCredits;
+
     gpaDisplay.textContent = earnedCredits > 0 ? gpa.toFixed(2) : '0.00';
     totalCreditsEl.textContent = totalCredits.toFixed(2);
 
@@ -586,12 +669,13 @@
 
   function createCgpaRow(data = {}, index) {
     const tr = document.createElement('tr');
+    const defaultCredits = getPresetCreditsForSem(state.dept, (index + 1).toString());
     tr.innerHTML = `
       <td>
         <input type="text" value="${escapeHtml(data.semName || `Semester ${index + 1}`)}" class="cgpa-sem-name">
       </td>
       <td>
-        <input type="number" min="0" max="100" step="0.5" value="${data.credits != null ? data.credits : 22}" class="cgpa-credits">
+        <input type="number" min="0" max="100" step="0.5" value="${data.credits != null ? data.credits : defaultCredits}" class="cgpa-credits">
       </td>
       <td>
         <input type="number" min="0" max="${state.scale === 'AU' ? 10.0 : 4.0}" step="0.01" value="${data.gpa != null ? data.gpa : 8.0}" class="cgpa-gpa">
@@ -716,6 +800,10 @@
     initSwipeToDelete(coursesTbody);
     initSwipeToDelete(cgpaTbody);
 
+    saveSemesterBtn.addEventListener('click', () => {
+      saveCurrentSemesterMarks();
+    });
+
     // Tab switching
     tabBtnGpa.addEventListener('click', () => {
       updateTabUI('gpa');
@@ -723,6 +811,7 @@
 
     tabBtnCgpa.addEventListener('click', () => {
       updateTabUI('cgpa');
+      syncCgpaTracker();
       renderCgpaRows();
       updateCgpaCalculation();
     });
@@ -733,9 +822,11 @@
 
     btnChangeSetup.addEventListener('click', () => {
       sessionStorage.setItem('isChangingSetup', 'true');
+      introOverlay.style.display = 'flex';
+      // Force reflow
+      void introOverlay.offsetWidth;
       introOverlay.classList.remove('hidden');
       introOverlay.classList.add('active');
-      mainApp.style.display = 'none';
     });
 
     yearSelect.addEventListener('change', () => {
@@ -765,7 +856,7 @@
     // CGPA Buttons
     cgpaAddRowBtn.addEventListener('click', () => {
       const nextIdx = state.cgpaSemesters.length;
-      const defaultCredits = nextIdx === 0 ? 22 : 24;
+      const defaultCredits = getPresetCreditsForSem(state.dept, (nextIdx + 1).toString());
       createCgpaRow({ semName: `Semester ${nextIdx + 1}`, credits: defaultCredits, gpa: 8.0 }, nextIdx);
       collectCgpaData();
       updateCgpaCalculation();

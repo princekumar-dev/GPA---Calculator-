@@ -42,7 +42,7 @@ body {
   min-height: 100vh;
   font-family: var(--font-body);
   color: var(--text-primary);
-  background-image: url('./public/images/campus.jpeg');
+  background-image: url('./assets/images/campus.jpeg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -210,18 +210,21 @@ select {
 
 /* Intro Overlay */
 .intro-overlay {
-  position: relative;
-  z-index: 50;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 100px);
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 .intro-overlay.hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  display: none !important;
 }
 
 .intro-modal {
@@ -380,6 +383,25 @@ select {
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
+.btn-success {
+  background: white;
+  color: var(--success-color);
+  border: 2px solid var(--success-color);
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 16px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+}
+.btn-success:hover {
+  background: var(--success-color);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+
 .btn-outline-gray {
   background: transparent;
   color: var(--text-secondary);
@@ -454,12 +476,12 @@ select {
   }
   tr td:first-child input {
     font-family: var(--font-display);
-    font-size: 0.95rem !important;
-    font-weight: 700 !important;
-    color: #1e293b !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
     border: 1px solid #e2e8f0 !important;
     background: #f8fafc !important;
-    padding: 8px 12px !important;
+    padding: 10px 12px !important;
     border-radius: 8px !important;
     width: 100%;
     letter-spacing: 0.2px;
@@ -509,16 +531,18 @@ select {
   /* Clean inputs with subtle borders */
   tr td:not(:first-child):not(:last-child) input,
   tr td:not(:first-child):not(:last-child) select { 
+    font-family: var(--font-body);
     font-size: 0.95rem !important; 
-    font-weight: 700 !important;
-    color: #0f172a !important;
-    padding: 6px 10px !important; 
+    font-weight: 600 !important;
+    color: #334155 !important;
+    padding: 6px 12px !important; 
     border: 1px solid #e2e8f0 !important;
     background: #f8fafc !important;
     border-radius: 6px !important;
     width: auto;
-    min-width: 100px;
+    min-width: 90px;
     cursor: pointer;
+    text-align: right;
   }
   tr td:not(:first-child):not(:last-child) input:focus,
   tr td:not(:first-child):not(:last-child) select:focus {
@@ -533,6 +557,9 @@ select {
     background: transparent !important;
     padding: 6px 0 !important;
     cursor: default;
+    color: #0f172a !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
   }
   tr td:not(:first-child):not(:last-child) input[readonly]:focus {
     box-shadow: none !important;
@@ -769,4 +796,46 @@ td input[readonly]:focus {
 select {
   background-image: none !important;
 }
+
+/* Premium Modern Inputs and Dropdowns inside Tables (overriding Tailwind default classic styles) */
+#courses-table td input, 
+#courses-table td select,
+#cgpa-table td input {
+  font-family: var(--font-body) !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  outline: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+
+#courses-table td input:focus, 
+#courses-table td select:focus,
+#cgpa-table td input:focus {
+  border-color: var(--primary-color) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15), 0 2px 4px rgba(37, 99, 235, 0.05) !important;
+}
+
+/* Specific alignments and overrides */
+#courses-table td input.credits-input,
+#cgpa-table td input.cgpa-credits,
+#cgpa-table td input.cgpa-gpa {
+  text-align: center !important;
+}
+
+#courses-table td input[readonly] {
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: default !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 

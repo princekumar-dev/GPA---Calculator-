@@ -991,8 +991,8 @@
     tbody.addEventListener('touchstart', e => {
       if (window.innerWidth > 640) return;
       
-      // Ignore swipe if clicking on an interactive element
-      if (e.target.closest('button, a, input, select, textarea')) return;
+      // Ignore swipe if clicking on buttons or links
+      if (e.target.closest('button, a')) return;
       
       const row = e.target.closest('tr');
       if (!row) return;
@@ -1036,6 +1036,9 @@
           } else {
             // Horizontal swipe: setup background
             swipeState.directionChecked = true;
+            if (document.activeElement && typeof document.activeElement.blur === 'function') {
+              document.activeElement.blur();
+            }
             const row = swipeState.row;
             row.style.position = 'relative';
             row.style.zIndex = '2';

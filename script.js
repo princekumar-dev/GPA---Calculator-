@@ -172,12 +172,16 @@
       }
     }
 
+    introOverlay.style.position = 'absolute';
+    introOverlay.style.width = '100%';
     introOverlay.classList.remove('active');
     introOverlay.classList.add('hidden');
     mainApp.style.display = 'block';
     
     setTimeout(() => {
       introOverlay.style.display = 'none';
+      introOverlay.style.position = '';
+      introOverlay.style.width = '';
       updateGpaCalculation();
     }, 400);
   }
@@ -827,6 +831,7 @@
       void introOverlay.offsetWidth;
       introOverlay.classList.remove('hidden');
       introOverlay.classList.add('active');
+      mainApp.style.display = 'none';
     });
 
     yearSelect.addEventListener('change', () => {

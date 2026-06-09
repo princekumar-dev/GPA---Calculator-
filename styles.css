@@ -403,13 +403,171 @@ select {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
-@media (max-width: 640px) {
-  .card { padding: 16px; border-radius: 20px; }
-}
 
 .page {
   max-width: 960px;
   margin: 0 auto;
+  padding: 0 8px;
+}
+
+@media (max-width: 640px) {
+  .card { 
+    padding: 16px; 
+    border-radius: 16px; 
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  .station-clock-card {
+    padding: 16px;
+  }
+  .hide-on-mobile {
+    display: none !important;
+  }
+  /* Premium Card Layout for Tables on Mobile (Academics-2 Match) */
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
+  }
+  thead { display: none; }
+  tr {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    position: relative;
+    gap: 8px;
+  }
+  td {
+    border: none !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+  }
+  /* First column (Course Name) styled as Card Title */
+  tr td:first-child {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  tr td:first-child input {
+    font-family: var(--font-display);
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    width: 100%;
+    letter-spacing: 0.2px;
+    transition: all 0.2s;
+  }
+  tr td:first-child input:focus {
+    border: 1px solid var(--primary-color) !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+  }
+  
+  /* Read-only Predefined Course Names */
+  tr td:first-child input[readonly] {
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    padding: 8px 0 !important;
+    cursor: default;
+    /* Allows native horizontal swiping/scrolling for long names */
+  }
+  tr td:first-child input[readonly]:focus {
+    box-shadow: none !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+  }
+  
+  /* Middle columns (Credits/Grade) stacked text-style */
+  tr td:not(:first-child):not(:last-child) {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  /* Dynamic Labels */
+  tr td:nth-child(2)::before {
+    content: "Credits:";
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-right: auto;
+    font-weight: 600;
+  }
+  tr td:nth-child(3)::before {
+    content: "Grade:";
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-right: auto;
+    font-weight: 600;
+  }
+  /* Clean inputs with subtle borders */
+  tr td:not(:first-child):not(:last-child) input,
+  tr td:not(:first-child):not(:last-child) select { 
+    font-size: 0.95rem !important; 
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    padding: 6px 10px !important; 
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    border-radius: 6px !important;
+    width: auto;
+    min-width: 100px;
+    cursor: pointer;
+  }
+  tr td:not(:first-child):not(:last-child) input:focus,
+  tr td:not(:first-child):not(:last-child) select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+  }
+  
+  /* Read-only Predefined Credits */
+  tr td:not(:first-child):not(:last-child) input[readonly] {
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    padding: 6px 0 !important;
+    cursor: default;
+  }
+  tr td:not(:first-child):not(:last-child) input[readonly]:focus {
+    box-shadow: none !important;
+    border: 1px solid transparent !important;
+  }
+  
+  /* Delete button styled as Badge in top right */
+  tr td:last-child {
+    display: none !important; /* Hidden on mobile in favor of swipe-to-delete */
+  }
+  .page {
+    padding: 0;
+  }
+  /* Reduce Tab Buttons on Mobile */
+  .tab-btn {
+    font-size: 0.8rem !important;
+    padding: 8px 4px !important;
+  }
+  /* Reduce Preset Title and Button on Mobile */
+  #current-preset-title {
+    font-size: 1rem !important;
+    line-height: 1.2 !important;
+  }
+  #current-preset-scale {
+    font-size: 0.75rem !important;
+  }
+  #btn-change-setup {
+    font-size: 0.75rem !important;
+    padding: 6px 12px !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .flex-between {
+    gap: 8px;
+  }
 }
 
 /* Tab Switcher */
@@ -518,6 +676,15 @@ td input, td select {
 }
 td input:focus, td select:focus { border-color: var(--primary-color); }
 td input[type="number"] { text-align: center; font-family: var(--font-body); }
+td input[readonly] {
+  border-color: transparent !important;
+  background: transparent !important;
+  cursor: default;
+}
+td input[readonly]:focus {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
 
 /* Remove button */
 .btn-row-remove {

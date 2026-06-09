@@ -60,10 +60,7 @@
   const yearSelect = document.getElementById('intro-year');
   const scaleSelect = document.getElementById('intro-scale');
 
-  const targetGpaInput = document.getElementById('target-gpa-input');
-  const targetGpaStatus = document.getElementById('target-gpa-status');
-  const targetMessageCard = document.getElementById('target-message-card');
-  const targetMessageText = document.getElementById('target-message-text');
+  // Target GPA inputs removed
 
   const coursesTbody = document.querySelector('#courses-table tbody');
   const addCourseBtn = document.getElementById('add-course');
@@ -103,10 +100,10 @@
     updateSemestersByYear();
     semSelect.value = state.sem;
     scaleSelect.value = state.scale;
-    targetGpaInput.value = state.targetGpa;
+    // Target GPA logic removed
 
-    // Set validation bounds based on grading scale
-    updateTargetGpaBounds();
+
+
 
     if (state.courses && state.courses.length > 0) {
       renderCourses();
@@ -114,8 +111,9 @@
       loadPresetCourses(state.dept, state.sem, false);
     }
 
-    // Automatically skip setup if we found existing save data
-    if (hasExistingState) {
+    // Automatically skip setup if we found existing save data and we aren't manually changing setup
+    const isChangingSetup = sessionStorage.getItem('isChangingSetup') === 'true';
+    if (hasExistingState && !isChangingSetup) {
       introOverlay.classList.add('hidden');
       introOverlay.classList.remove('active');
       mainApp.style.display = 'block';
@@ -153,11 +151,10 @@
   }
 
   function applySetupAndStart(needsReload) {
+    sessionStorage.removeItem('isChangingSetup');
     state.dept = deptSelect.value;
     state.sem = semSelect.value;
     state.scale = scaleSelect.value;
-
-    updateTargetGpaBounds();
     updatePresetTitleDisplay();
 
     if (needsReload || !state.courses || state.courses.length === 0) {
@@ -199,7 +196,6 @@
     try {
       // Collect current courses list from DOM
       state.courses = collectCourses();
-      state.targetGpa = parseFloat(targetGpaInput.value) || 0;
       state.dept = deptSelect.value;
       state.sem = semSelect.value;
       state.scale = scaleSelect.value;
@@ -235,7 +231,7 @@
     if (branchData && branchData.semesters && branchData.semesters[sem]) {
       const courses = branchData.semesters[sem];
       courses.forEach(c => {
-        createCourseRow({ name: c.name, credits: c.credits, grade: '' });
+        createCourseRow({ name: c.name, credits: c.credits, grade: '', isPreset: true });
       });
 
       if (showToastAlert) {
@@ -268,19 +264,26 @@
       gradeOptions += `<option value="${grade}" ${selectedAttr}>${grade}</option>`;
     });
 
+    // Retroactive fix for older localStorage saves that lack the isPreset flag
+    if (data.isPreset === undefined) {
+      data.isPreset = (data.name && data.name !== '' && !data.name.toLowerCase().includes('custom subject'));
+    }
+
+    const readonlyAttr = data.isPreset ? 'readonly' : '';
+
     tr.innerHTML = `
       <td>
-        <input type="text" placeholder="Course Name/Code" class="course-name" value="${escapeHtml(data.name || '')}">
+        <input type="text" placeholder="Course Name/Code" class="course-name" value="${escapeHtml(data.name || '')}" ${readonlyAttr}>
       </td>
       <td>
-        <input type="number" min="0" max="20" step="0.5" value="${data.credits != null ? data.credits : 3}" class="credits-input">
+        <input type="number" min="0" max="20" step="0.5" value="${data.credits != null ? data.credits : 3}" class="credits-input" ${readonlyAttr}>
       </td>
       <td>
         <select class="grade-select">
           ${gradeOptions}
         </select>
       </td>
-      <td class="points-cell" style="text-align: right;">—</td>
+      <td class="points-cell hide-on-mobile" style="text-align: right;">—</td>
       <td>
         <button type="button" class="btn-row-remove" aria-label="Remove Course">
           <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -334,13 +337,32 @@
       return {
         name: nameInput ? nameInput.value : '',
         credits: creditsInput ? parseFloat(creditsInput.value) || 0 : 0,
-        grade: gradeSelect ? gradeSelect.value : ''
+        grade: gradeSelect ? gradeSelect.value : '',
+        isPreset: nameInput ? nameInput.hasAttribute('readonly') : false
       };
     });
   }
 
   // --- Dynamic Calculator Logic (Semester GPA) ---
+  // Set validation bounds based on grading scale
+  function updateTargetGpaBounds() {
+    if (state.scale === 'AU') {
+      targetGpaInput.setAttribute('max', '10.0');
+      targetGpaInput.setAttribute('step', '0.1');
+      if (parseFloat(targetGpaInput.value) < 4.0 || parseFloat(targetGpaInput.value) > 10.0) {
+        targetGpaInput.value = '8.5';
+      }
+    } else {
+      targetGpaInput.setAttribute('max', '4.0');
+      targetGpaInput.setAttribute('step', '0.05');
+      if (parseFloat(targetGpaInput.value) > 4.0) {
+        targetGpaInput.value = '3.5';
+      }
+    }
+  }
+
   function updateGpaCalculation() {
+
     const rows = Array.from(coursesTbody.querySelectorAll('tr'));
     const currentMap = state.scale === 'AU' ? gradeMapAU : gradeMapUS;
 
@@ -397,9 +419,8 @@
     // Render visual distribution bars
     renderGradeDistribution(gradeCounts, totalRowList - unselectedCount);
 
-    // Run Target GPA Analyzer
+    // Run Target GPA Analyzer (Removed)
     const remainingCredits = totalCredits - gradedCredits;
-    updateTargetEstimator(earnedCredits, remainingCredits, totalPoints);
     // --- Visual Grade Distribution Chart ---
     function renderGradeDistribution(counts, totalGraded) {
       gradeDistributionBars.innerHTML = '';
@@ -468,23 +489,9 @@
     }
 
     // --- Target GPA Goals Analyser (USP) ---
-    function updateTargetGpaBounds() {
-      if (state.scale === 'AU') {
-        targetGpaInput.setAttribute('max', '10.0');
-        targetGpaInput.setAttribute('step', '0.1');
-        if (parseFloat(targetGpaInput.value) < 4.0 || parseFloat(targetGpaInput.value) > 10.0) {
-          targetGpaInput.value = '8.5';
-        }
-      } else {
-        targetGpaInput.setAttribute('max', '4.0');
-        targetGpaInput.setAttribute('step', '0.05');
-        if (parseFloat(targetGpaInput.value) > 4.0) {
-          targetGpaInput.value = '3.5';
-        }
-      }
-    }
 
     function updateTargetEstimator(earnedCredits, remainingCredits, currentPoints) {
+
       const targetGpa = parseFloat(targetGpaInput.value) || 0;
       const maxGradePoint = state.scale === 'AU' ? 10 : 4.0;
       const expectedTotalCredits = earnedCredits + remainingCredits;
@@ -512,7 +519,6 @@
         }
         return;
       }
-    }
 
     // How many total points do we need?
     const targetTotalPoints = targetGpa * expectedTotalCredits;
@@ -568,6 +574,7 @@
       targetMessageText.innerHTML = `To hit your target of <strong>${targetGpa.toFixed(2)}</strong>, you need to average a grade of <strong>${recommendedGrade}</strong> (minimum <strong>${requiredRemainingAvg.toFixed(2)}</strong> points per credit) across your remaining <strong>${remainingCredits.toFixed(1)}</strong> credits.`;
     }
   }
+}
 
   // --- TAB 2: CGPA TRACKER VIEW ---
   function renderCgpaRows() {
@@ -706,6 +713,9 @@
 
   // --- Event Listeners and Triggers ---
   function setupEventListeners() {
+    initSwipeToDelete(coursesTbody);
+    initSwipeToDelete(cgpaTbody);
+
     // Tab switching
     tabBtnGpa.addEventListener('click', () => {
       updateTabUI('gpa');
@@ -722,6 +732,7 @@
     });
 
     btnChangeSetup.addEventListener('click', () => {
+      sessionStorage.setItem('isChangingSetup', 'true');
       introOverlay.classList.remove('hidden');
       introOverlay.classList.add('active');
       mainApp.style.display = 'none';
@@ -731,11 +742,7 @@
       updateSemestersByYear();
     });
 
-    // Target GPA inputs
-    targetGpaInput.addEventListener('input', () => {
-      updateGpaCalculation();
-      saveStateToStorage();
-    });
+    // Target GPA inputs removed
 
     // Main buttons
     addCourseBtn.addEventListener('click', () => {
@@ -844,6 +851,81 @@
     return String(s).replace(/[&<>"']/g, c => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[c]));
+  }
+
+  // --- Mobile Swipe to Delete ---
+  let swipeState = { row: null, startX: 0, currentX: 0, isSwiping: false };
+
+  function initSwipeToDelete(tbody) {
+    tbody.addEventListener('touchstart', e => {
+      if (window.innerWidth > 640) return;
+      const row = e.target.closest('tr');
+      if (!row) return;
+      
+      swipeState.row = row;
+      swipeState.startX = e.touches[0].clientX;
+      swipeState.currentX = 0;
+      swipeState.isSwiping = true;
+      row.style.transition = 'none';
+      row.style.position = 'relative';
+      row.style.zIndex = '2';
+
+      let bg = document.getElementById('global-swipe-bg');
+      if (!bg) {
+        bg = document.createElement('div');
+        bg.id = 'global-swipe-bg';
+        bg.innerHTML = '<span style="color:white; font-weight:bold; font-size:1.1rem; margin-right: 32px; letter-spacing: 0.5px;">Delete</span>';
+        bg.style.position = 'absolute';
+        bg.style.backgroundColor = '#ef4444';
+        bg.style.borderRadius = '16px';
+        bg.style.display = 'none';
+        bg.style.alignItems = 'center';
+        bg.style.justifyContent = 'flex-end';
+        bg.style.zIndex = '1';
+        document.body.appendChild(bg);
+      }
+      const rect = row.getBoundingClientRect();
+      bg.style.top = (rect.top + window.scrollY) + 'px';
+      bg.style.left = (rect.left + window.scrollX) + 'px';
+      bg.style.width = rect.width + 'px';
+      bg.style.height = rect.height + 'px';
+      bg.style.display = 'flex';
+    }, {passive: true});
+
+    tbody.addEventListener('touchmove', e => {
+      if (!swipeState.isSwiping || !swipeState.row) return;
+      const deltaX = e.touches[0].clientX - swipeState.startX;
+      if (deltaX < 0) { // Only swipe left
+        swipeState.currentX = Math.max(deltaX, -140);
+        swipeState.row.style.transform = `translateX(${swipeState.currentX}px)`;
+      }
+    }, {passive: true});
+
+    tbody.addEventListener('touchend', e => {
+      if (!swipeState.isSwiping || !swipeState.row) return;
+      swipeState.isSwiping = false;
+      const row = swipeState.row;
+      row.style.transition = 'transform 0.3s ease';
+      
+      if (swipeState.currentX <= -75) {
+        row.style.transform = `translateX(-100vw)`;
+        setTimeout(() => {
+          const deleteBtn = row.querySelector('.btn-row-remove');
+          if (deleteBtn) deleteBtn.click();
+          const bg = document.getElementById('global-swipe-bg');
+          if (bg) bg.style.display = 'none';
+          row.style.transform = '';
+        }, 300);
+      } else {
+        row.style.transform = `translateX(0)`;
+        setTimeout(() => {
+          const bg = document.getElementById('global-swipe-bg');
+          if (bg) bg.style.display = 'none';
+          row.style.transform = '';
+        }, 300);
+      }
+      swipeState.row = null;
+    });
   }
 
   // Launch on document ready

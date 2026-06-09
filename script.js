@@ -1070,11 +1070,20 @@
 
             bg.onclick = (event) => {
               event.preventDefault();
+              const isDeleteBtnClick = event.target.closest('button');
               const activeRow = swipeState.openRow || swipeState.row;
+              
               if (activeRow) {
-                const deleteBtn = activeRow.querySelector('.btn-row-remove');
-                if (deleteBtn) deleteBtn.click();
-                activeRow.style.transform = 'translateX(0)';
+                if (isDeleteBtnClick) {
+                  const deleteBtn = activeRow.querySelector('.btn-row-remove');
+                  if (deleteBtn) deleteBtn.click();
+                  activeRow.style.transform = 'translateX(0)';
+                  activeRow.style.boxShadow = '';
+                } else {
+                  activeRow.style.transition = 'transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s';
+                  activeRow.style.transform = 'translateX(0)';
+                  activeRow.style.boxShadow = '';
+                }
               }
               bg.style.display = 'none';
               swipeState.openRow = null;
